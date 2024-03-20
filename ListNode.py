@@ -18,9 +18,9 @@ class ListNode:
         return root
 
     # Function to convert array to linked list
-    def arrayToLinkedList(self, arr, n):
+    def arrayToLinkedList(self, arr, length):
         root = None
-        for i in range(0, n, 1):
+        for i in range(0, length, 1):
             root = ListNode().insert(root, arr[i])
 
         return root
