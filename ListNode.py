@@ -28,7 +28,7 @@ class ListNode:
     # Function to convert linked list to array
     def linkedListToArray(self, root):
         if not root:
-            return
+            return []
         nodeList = []
         dummy = root
         while dummy:
