@@ -10,11 +10,11 @@ def insert(intervals, newInterval):
     ans = []
     for start, end in intervals:
         curr_start, curr_end = curr[0], curr[1]
-        # Insert curr
+        # Insert [start, end]
         if end < curr_start:
             ans.append([start, end])
 
-        # Insert newInterval
+        # Insert curr
         elif start > curr_end:
             ans.append(curr)
             curr = [start, end]
