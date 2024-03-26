@@ -11,10 +11,10 @@ def firstMissingPositive(nums):
     # Cycle Sorting
     for i in range(N):
         while True:
-            n = nums[i]
-            if n <= 0 or n > N or nums[n - 1] == n:
+            x = nums[i]
+            if x <= 0 or x > N or nums[x - 1] == x:
                 break
-            nums[i], nums[n-1] = nums[n-1], nums[i]
+            nums[i], nums[x-1] = nums[x-1], nums[i]
 
     for i in range(N):
         if nums[i] != i + 1:
