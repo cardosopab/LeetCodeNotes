@@ -9,6 +9,7 @@
 
 
 from collections import deque
+from collections import Counter
 
 
 def countStudents(students, sandwiches):
@@ -52,3 +53,58 @@ print("Pass" if countStudents(students, sandwiches) == ans else "Fail")
 # students.length == sandwiches.length
 # sandwiches[i] is 0 or 1.
 # students[i] is 0 or 1.
+
+
+def countStudents(students, sandwiches):
+    students_count = Counter(students)
+
+    res = len(students)
+    for s in sandwiches:
+        if students_count[s] > 0:
+            students_count[s] -= 1
+            res -= 1
+        else:
+            break
+    print(res)
+    return res
+
+
+# Example 1:
+students = [1, 1, 0, 0]
+sandwiches = [0, 1, 0, 1]
+ans = 0
+print("Pass" if countStudents(students, sandwiches) == ans else "Fail")
+# Example 2:
+students = [1, 1, 1, 0, 0, 1]
+sandwiches = [1, 0, 0, 0, 1, 1]
+ans = 3
+print("Pass" if countStudents(students, sandwiches) == ans else "Fail")
+
+
+def countStudents(students, sandwiches):
+    N = len(sandwiches)
+
+    z = students.count(0)
+    o = students.count(1)
+
+    for i, s in enumerate(sandwiches):
+        if s == 1 and o > 0:
+            o -= 1
+        elif s == 0 and z > 0:
+            z -= 1
+        else:
+            return N - i
+
+    return 0
+
+
+# Example 1:
+students = [1, 1, 0, 0]
+sandwiches = [0, 1, 0, 1]
+ans = 0
+print("Pass" if countStudents(students, sandwiches) == ans else "Fail")
+# Example 2:
+students = [1, 1, 1, 0, 0, 1]
+sandwiches = [1, 0, 0, 0, 1, 1]
+ans = 3
+print("Pass" if countStudents(students, sandwiches) == ans else "Fail")
