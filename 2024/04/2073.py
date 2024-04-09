@@ -41,3 +41,28 @@ print("Pass" if timeRequiredToBuy(tickets, k) == ans else "Fail")
 # n == tickets.length
 # 1 <= n <= 100
 # 1 <= tickets[i] <= 100
+
+
+def timeRequiredToBuy(tickets, k):
+    N = len(tickets)
+
+    timer = tickets[k]
+
+    for i in range(N):
+        if i < k:
+            timer += min(tickets[i], tickets[k])
+        elif i > k:
+            timer += min(tickets[i], tickets[k] - 1)
+    return timer
+
+
+# Example 1:
+tickets = [2, 3, 2]
+k = 2
+ans = 6
+print("Pass" if timeRequiredToBuy(tickets, k) == ans else "Fail")
+# Example 2:
+tickets = [5, 1, 1, 1]
+k = 0
+ans = 8
+print("Pass" if timeRequiredToBuy(tickets, k) == ans else "Fail")
