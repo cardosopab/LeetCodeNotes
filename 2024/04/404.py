@@ -15,8 +15,7 @@ def sumOfLeftLeaves(root):
             return 0
 
         if not node.left and not node.right:
-            val = node.val if node.val is not None else 0
-            return val if is_left else 0
+            return node.val if is_left else 0
 
         return dfs(node.left, True) + dfs(node.right, False)
 
