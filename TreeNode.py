@@ -28,3 +28,22 @@ class TreeNode:
                 queue.extend([node.left, node.right])
 
         return root
+
+    def to_list(self):
+        result = []
+        queue = deque([self])
+
+        while queue:
+            node = queue.popleft()
+            if node:
+                result.append(node.val)
+                queue.append(node.left)
+                queue.append(node.right)
+            else:
+                result.append(None)
+
+        # Remove trailing None values
+        while result and result[-1] is None:
+            result.pop()
+
+        return result
