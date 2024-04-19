@@ -52,3 +52,41 @@ print("Pass" if islandPerimeter(grid) == ans else "Fail")
 # 1 <= row, col <= 100
 # grid[i][j] is 0 or 1.
 # There is exactly one island in grid.
+
+
+def islandPerimeter(grid):
+    R, C = len(grid), len(grid[0])
+    ans = 0
+    for r in range(R):
+        if grid[r][0] == 1:
+            ans += 1
+        if grid[r][-1] == 1:
+            ans += 1
+        for c in range(C - 1):
+            if grid[r][c] != grid[r][c + 1]:
+                ans += 1
+
+    for c in range(C):
+        if grid[0][c] == 1:
+            ans += 1
+        if grid[-1][c] == 1:
+            ans += 1
+        for r in range(R - 1):
+            if grid[r][c] != grid[r + 1][c]:
+                ans += 1
+    return ans
+
+
+# Example 1:
+grid = [[0, 1, 0, 0], [1, 1, 1, 0], [0, 1, 0, 0], [1, 1, 0, 0]]
+ans = 16
+print("Pass" if islandPerimeter(grid) == ans else "Fail")
+# Explanation: The perimeter is the 16 yellow stripes in the image above.
+# Example 2:
+grid = [[1]]
+ans = 4
+print("Pass" if islandPerimeter(grid) == ans else "Fail")
+# Example 3:
+grid = [[1, 0]]
+ans = 4
+print("Pass" if islandPerimeter(grid) == ans else "Fail")
