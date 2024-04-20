@@ -107,3 +107,52 @@ print(f"Pass: {res}" if res == ans else f"Fail: {res}")
 # 1 <= m, n <= 300
 # land consists of only 0's and 1's.
 # Groups of farmland are rectangular in shape.
+
+
+def findFarmLand(land):
+    R, C, res = len(land), len(land[0]), []
+    visited = [[False] * C for _ in range(R)]
+
+    for r in range(R):
+        for c in range(C):
+            if land[r][c] == 1 and not visited[r][c]:
+                er, ec = r, c
+
+                while er + 1 < R and land[er + 1][ec] == 1:
+                    er += 1
+                while ec + 1 < C and land[er][ec + 1] == 1:
+                    ec += 1
+                res.append([r, c, er, ec])
+
+                for cr in range(r, er + 1):
+                    for cc in range(c, ec + 1):
+                        visited[cr][cc] = True
+
+    return res
+
+
+# Example 1:
+land = [[1, 0, 0], [0, 1, 1], [0, 1, 1]]
+ans = [[0, 0, 0, 0], [1, 1, 2, 2]]
+res = findFarmLand(land)
+print(f"Pass: {res}" if res == ans else f"Fail: {res}")
+# Explanation:
+# The first group has a top left corner at land[0][0] and a bottom right corner at land[0][0].
+# The second group has a top left corner at land[1][1] and a bottom right corner at land[2][2].
+# Example 2:
+land = [[1, 1], [1, 1]]
+ans = [[0, 0, 1, 1]]
+res = findFarmLand(land)
+print(f"Pass: {res}" if res == ans else f"Fail: {res}")
+# Explanation:
+# The first group has a top left corner at land[0][0] and a bottom right corner at land[1][1].
+# Example 3:
+land = [[0]]
+ans = []
+res = findFarmLand(land)
+print(f"Pass: {res}" if res == ans else f"Fail: {res}")
+# Example 4:
+land = [[1, 1], [0, 0]]
+ans = [[0, 0, 0, 1]]
+res = findFarmLand(land)
+print(f"Pass: {res}" if res == ans else f"Fail: {res}")
