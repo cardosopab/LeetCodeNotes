@@ -19,17 +19,17 @@ def validPath(n, edges, source, destination):
         graph[d].append(s)
 
     d = deque([source])
-    visited = set()
+    visited = set([source])
 
     while d:
         node = d.popleft()
-        visited.add(node)
 
         if node == destination:
             return True
 
         for edge in graph[node]:
             if edge not in visited:
+                visited.add(node)
                 d.append(edge)
 
     return False
