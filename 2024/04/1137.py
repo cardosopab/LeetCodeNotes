@@ -96,6 +96,48 @@ res = Solution().tribonacci(n)
 print(res)
 print("Pass" if res == ans else "Fail")
 
-# Constraints:
-# 0 <= n <= 37
-# The answer is guaranteed to fit within a 32-bit integer, ie. answer <= 2^31 - 1.
+
+class Solution:
+    def tribonacci(self, n: int) -> int:
+        if n == 0:
+            return 0
+        if n == 1:
+            return 1
+        if n == 2:
+            return 1
+        first = 0
+        second = 1
+        third = 1
+
+        for i in range(3, n+1):
+            temp = first + second + third
+            first = second
+            second = third
+            third = temp
+
+        return third
+
+
+# Example 1:
+n = 4
+ans = 4
+res = Solution().tribonacci(n)
+print(res)
+print("Pass" if res == ans else "Fail")
+# Explanation:
+# T_3 = 0 + 1 + 1 = 2
+# T_4 = 1 + 1 + 2 = 4
+
+# Example 2:
+n = 25
+ans = 1389537
+res = Solution().tribonacci(n)
+print(res)
+print("Pass" if res == ans else "Fail")
+
+# Example 3:
+n = 37
+ans = 2082876103
+res = Solution().tribonacci(n)
+print(res)
+print("Pass" if res == ans else "Fail")
