@@ -99,7 +99,6 @@ template <typename SolutionType> void testTribonacci() {
   // T_4 = 1 + 1 + 2 = 4
 
   // Example 2:
-  // Example 1
   int n2 = 25;
   int ans2 = 1389537;
   int result2 = sol.tribonacci(n2);
