@@ -7,6 +7,7 @@
 
 #include <algorithm>
 #include <iostream>
+#include <set>
 #include <unordered_set>
 #include <vector>
 using namespace std;
@@ -53,6 +54,28 @@ public:
   }
 };
 
+class Solution3 : public Solution {
+public:
+  int findMaxK(vector<int> &nums) {
+    set<int, greater<int>> cache;
+    int ans = -1;
+
+    for (int n : nums) {
+      cache.insert(n);
+    }
+
+    for (int n : cache) {
+      if (n <= 0) {
+        break;
+      }
+      if (cache.count(-n) == 1) {
+        ans = max(ans, abs(n));
+      }
+    }
+    return ans;
+  }
+};
+
 void test_solution(Solution &sol) {
   // Example 1:
   vector<int> nums1 = {-1, 2, -3, 3};
@@ -93,6 +116,13 @@ void test_solution(Solution &sol) {
   cout << "Test 5" << ": " << res5 << " " << (res5 == ans5 ? "Pass" : "Fail")
        << endl;
 
+  // Example 6:
+  vector<int> nums6 = {14, 33, 40, -33, 8, -24, -42, 30, -18, -34};
+  int ans6 = 33;
+  int res6 = sol.findMaxK(nums6);
+  cout << "Test 6" << ": " << res6 << " " << (res6 == ans6 ? "Pass" : "Fail")
+       << endl;
+
   // Constraints:
   // 1 <= nums.length <= 1000
   // -1000 <= nums[i] <= 1000
@@ -102,8 +132,11 @@ void test_solution(Solution &sol) {
 int main() {
   Solution1 sol1;
   Solution2 sol2;
+  Solution3 sol3;
   cout << "Testing Solution1:" << endl;
   test_solution(sol1);
   cout << "Testing Solution2:" << endl;
   test_solution(sol2);
+  cout << "Testing Solution3:" << endl;
+  test_solution(sol3);
 }

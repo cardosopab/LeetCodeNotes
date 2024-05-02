@@ -39,6 +39,18 @@ class Solution1:
         return res
 
 
+class Solution2:
+    def findMaxK(self, nums: List[int]) -> int:
+        cache = set(nums)
+        res = -1
+
+        for n in cache:
+            if -n in cache:
+                res = max(res, abs(n))
+
+        return res
+
+
 def test_solutions(solutions: Solution):
     for i, sol in enumerate(solutions):
         print(f"Solution {i}")
@@ -82,9 +94,8 @@ def test_solutions(solutions: Solution):
         print(
             f"Pass: {res} Time:{stop_time -start_time:.6f}" if ans == res else f"Fail: {res}")
 
-
         # Constraints:
         # 1 <= nums.length <= 1000
         # -1000 <= nums[i] <= 1000
         # nums[i] != 0
-test_solutions([Solution, Solution1])
+test_solutions([Solution, Solution1, Solution2])
