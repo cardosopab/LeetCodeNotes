@@ -9,21 +9,30 @@
 # The 3rd place athlete's rank is "Bronze Medal".
 # For the 4th place to the nth place athlete, their rank is their placement number (i.e., the xth place athlete's rank is "x").
 # Return an array answer of size n where answer[i] is the rank of the ith athlete.
+
+
+from collections import defaultdict
+
+
 def findRelativeRanks(score):
-    ans = []
-    sort = sorted(score, reverse=True)
     ranks = [
         "Gold Medal",
         "Silver Medal",
         "Bronze Medal",
     ]
+    stack = []
+    ans = [None] * len(score)
 
-    for s in score:
-        idx = sort.index(s)
+    for i, s in enumerate(score):
+        stack.append((s, i))
+
+    stack.sort(reverse=True)
+
+    for idx, (_, i) in enumerate(stack):
         if idx < 3:
-            ans.append(ranks[idx])
+            ans[i] = ranks[idx]
         else:
-            ans.append(str(idx + 1))
+            ans[i] = str(idx + 1)
 
     return ans
 
@@ -53,3 +62,41 @@ print("Pass" if res == ans else f"Fail {res}")
 # 1 <= n <= 104
 # 0 <= score[i] <= 106
 # All the values in score are unique.
+
+
+def findRelativeRanks(score):
+    ans = []
+    sort = sorted(score, reverse=True)
+    ranks = [
+        "Gold Medal",
+        "Silver Medal",
+        "Bronze Medal",
+    ]
+
+    for s in score:
+        idx = sort.index(s)
+        if idx < 3:
+            ans.append(ranks[idx])
+        else:
+            ans.append(str(idx + 1))
+
+    return ans
+
+
+# Example 1:
+score = [5, 4, 3, 2, 1]
+ans = ["Gold Medal", "Silver Medal", "Bronze Medal", "4", "5"]
+res = findRelativeRanks(score)
+print("Pass" if res == ans else f"Fail {res}")
+
+# Example 2:
+score = [10, 3, 8, 9, 4]
+ans = ["Gold Medal", "5", "Bronze Medal", "Silver Medal", "4"]
+res = findRelativeRanks(score)
+print("Pass" if res == ans else f"Fail {res}")
+
+# Example 3:
+score = [1]
+ans = ["Gold Medal"]
+res = findRelativeRanks(score)
+print("Pass" if res == ans else f"Fail {res}")
