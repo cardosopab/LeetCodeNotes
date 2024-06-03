@@ -8,6 +8,7 @@
 // memory.
 
 #include <iostream>
+#include <utility>
 #include <vector>
 
 class Solution {
@@ -25,6 +26,16 @@ public:
       s[right] = temp;
       left++;
       right--;
+    }
+  };
+};
+
+class Solution2 : public Solution {
+public:
+  void reverseString(std::vector<char> &s) {
+    int left = 0, right = s.size() - 1;
+    while (left < right) {
+      std::swap(s[left++], s[right--]);
     }
   };
 };
@@ -48,6 +59,11 @@ void test_solution(Solution *sol) {
 }
 
 int main() {
+  std::cout << "Test 1" << std::endl;
   Solution1 sol1;
   test_solution(&sol1);
+
+  std::cout << "Test 2" << std::endl;
+  Solution2 sol2;
+  test_solution(&sol2);
 }
