@@ -25,7 +25,85 @@ public:
                                    std::string sentence) = 0;
 };
 
+class TrieNode {
+public:
+  TrieNode *children[26];
+  bool is_end;
+
+  TrieNode() {
+    for (int i = 0; i < 26; i++) {
+      children[i] = nullptr;
+    }
+    is_end = false;
+  }
+};
+
+class Trie {
+public:
+  TrieNode *root;
+  Trie() { this->root = new TrieNode(); }
+
+  void insert(std::string word) {
+    TrieNode *curr = root;
+    for (const char &c : word) {
+      int n = int(c) - int('a');
+      if (curr->children[n] == nullptr) {
+        curr->children[n] = new TrieNode();
+      }
+      curr = curr->children[n];
+    }
+    curr->is_end = true;
+  }
+
+  std::string search(std::string word) {
+    TrieNode *curr = root;
+    std::string ans = "";
+    for (const char &c : word) {
+      int n = int(c) - int('a');
+      if (curr->children[n] == nullptr) {
+        break;
+      }
+
+      ans += char(n + int('a'));
+      if (curr->children[n]->is_end) {
+        return ans;
+      }
+
+      curr = curr->children[n];
+    }
+    return word;
+  }
+};
+
 class Solution1 : public Solution {
+public:
+  std::string replaceWords(std::vector<std::string> &dictionary,
+                           std::string sentence) {
+    Trie trie = Trie();
+    std::string ans = "";
+
+    for (auto w : dictionary) {
+      trie.insert(w);
+    }
+
+    for (int i = 0; i < sentence.size(); i++) {
+      int j = i;
+      while (j < sentence.size() && sentence[j] != ' ')
+        j++;
+
+      std::string sub_s = sentence.substr(i, j - i);
+      i = j;
+      std::string new_w = trie.search(sub_s);
+      ans += new_w;
+      if (i < sentence.size() - 1) {
+        ans += ' ';
+      }
+    }
+    return ans;
+  };
+};
+
+class Solution2 : public Solution {
 public:
   std::string replaceWords(std::vector<std::string> &dictionary,
                            std::string sentence) {
@@ -88,6 +166,11 @@ void test_solution(Solution *sol) {
 }
 
 int main() {
+  std::cout << "Test 1" << std::endl;
   Solution1 sol1;
   test_solution(&sol1);
+
+  std::cout << "Test 2" << std::endl;
+  Solution2 sol2;
+  test_solution(&sol2);
 }
