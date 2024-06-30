@@ -15,40 +15,53 @@
 // Return the maximum number of edges you can remove, or return -1 if Alice and
 // Bob cannot fully traverse the graph.
 
+#include <algorithm>
 #include <iostream>
 #include <vector>
 
 class UnionFind {
   int *parent;
-  int N;
+  int *rank;
+  int components;
 
 public:
   UnionFind(int n) {
-    N = n;
-    parent = new int[N];
-    for (int i = 0; i < N; i++) {
+    components = n;
+    parent = new int[n];
+    for (int i = 0; i < n; i++) {
       parent[i] = i;
     }
+    rank = new int[n];
+    std::fill_n(rank, n, 0);
   }
 
   int find(int x) {
-    int root = x;
-    while (parent[root] != root) {
-      root = parent[root];
+    if (parent[x] != x) {
+      parent[x] = find(parent[x]);
     }
-    return root;
+    return parent[x];
   }
 
-  void merge(int x, int y) {
+  bool merge(int x, int y) {
     int root_x = find(x);
     int root_y = find(y);
 
     if (root_x != root_y) {
-      parent[root_x] = root_y;
+      if (rank[root_x] > rank[root_y]) {
+        parent[root_y] = root_x;
+      } else if (rank[root_x] < rank[root_y]) {
+        parent[root_x] = root_y;
+      } else {
+        parent[root_y] = root_x;
+        rank[root_x]++;
+      }
+      components--;
+      return true;
     }
+    return false;
   }
 
-  bool is_connected(int x, int y) { return find(x) == find(y); }
+  bool is_connected() { return components == 1; }
 };
 
 class Solution {
@@ -62,18 +75,16 @@ public:
   int maxNumEdgesToRemove(int n, std::vector<std::vector<int>> &edges) {
     auto alice = UnionFind(n);
     auto bob = UnionFind(n);
-    int ans = 0;
+    int edges_used = 0;
 
     for (const auto &e : edges) {
       int v = e[0], x = e[1], y = e[2];
       x--;
       y--;
       if (v == 3) {
-        if (alice.is_connected(x, y)) {
-          ans++;
-        } else {
-          alice.merge(x, y);
+        if (alice.merge(x, y)) {
           bob.merge(x, y);
+          edges_used++;
         }
       }
     }
@@ -83,34 +94,21 @@ public:
       x--;
       y--;
       if (v == 1) {
-        if (alice.is_connected(x, y)) {
-          ans++;
-        } else {
-          alice.merge(x, y);
+        if (alice.merge(x, y)) {
+          edges_used++;
+        }
+      } else if (v == 2) {
+        if (bob.merge(x, y)) {
+          edges_used++;
         }
       }
     }
 
-    for (const auto &e : edges) {
-      int v = e[0], x = e[1], y = e[2];
-      x--;
-      y--;
-      if (v == 2) {
-        if (bob.is_connected(x, y)) {
-          ans++;
-        } else {
-          bob.merge(x, y);
-        }
-      }
+    if (!alice.is_connected() || !bob.is_connected()) {
+      return -1;
     }
 
-    for (int i = 0; i < n; i++) {
-      if (!alice.is_connected(0, i) || !alice.is_connected(0, i)) {
-        return -1;
-      }
-    }
-
-    return ans;
+    return edges.size() - edges_used;
   }
 };
 
