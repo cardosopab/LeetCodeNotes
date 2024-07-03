@@ -44,11 +44,8 @@ public:
 
       int min_curr = min_heap.top();
       min_heap.pop();
-      n_min[i] = min_curr;
+      n_min[3 - i] = min_curr;
     }
-
-    std::sort(n_max, n_max + (sizeof(n_max) / sizeof(n_max[0])));
-    std::sort(n_min, n_min + (sizeof(n_min) / sizeof(n_min[0])));
 
     for (int i = 0; i < 4; i++) {
       ans = std::min(ans, (n_max[i] - n_min[i]));
