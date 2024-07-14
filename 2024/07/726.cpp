@@ -29,6 +29,7 @@
 #include <iostream>
 #include <map>
 #include <string>
+#include <utility>
 #include <vector>
 class Solution {
 public:
@@ -37,25 +38,25 @@ public:
 
 class Solution1 : public Solution {
 public:
+  std::pair<int, int> get_count(const std::string &formula, int j) {
+    int n = 0;
+    while (j < formula.size() && std::isdigit(formula[j])) {
+      n = n * 10 + (formula[j] - '0');
+      j++;
+    }
+    return std::make_pair(j, n == 0 ? 1 : n);
+  };
   std::string countOfAtoms(std::string formula) {
     int N = formula.size();
-    std::vector<std::map<std::string, int>> stack;
-    stack.push_back({});
-
+    std::vector<std::map<std::string, int>> stack(1);
     for (int i = 0; i < N; i++) {
       if (formula[i] == '(') {
-        stack.push_back({});
+        stack.emplace_back();
       } else if (formula[i] == ')') {
-        int j = i + 1;
-        std::string str_n = "";
-        while (j < N && std::isdigit(formula[j])) {
-          str_n += formula[j];
-          j++;
-        }
-        int x = !str_n.empty() ? std::stoi(str_n) : 1;
-        auto temp = stack.back();
+        auto [j, x] = get_count(formula, i + 1);
+        auto top = stack.back();
         stack.pop_back();
-        for (auto &[el, cnt] : temp) {
+        for (auto &[el, cnt] : top) {
           stack.back()[el] += cnt * x;
         }
         i = j - 1;
@@ -64,30 +65,18 @@ public:
         while (j < N && std::islower(formula[j])) {
           j++;
         }
-
-        std::string temp_str = formula.substr(i, j - i);
-        std::string temp_n = "";
-
-        while (j < N && std::isdigit(formula[j])) {
-          temp_n += formula[j];
-          j++;
-        }
-        i = j - 1;
-        if (temp_str.empty()) {
-          continue;
-        } else {
-          stack.back()[temp_str] += std::stoi(temp_n.empty() ? "1" : temp_n);
-        }
+        std::string el = formula.substr(i, j - i);
+        auto [k, x] = get_count(formula, j);
+        i = k - 1;
+        stack.back()[el] += x;
       }
     }
     std::string res = "";
     for (auto &r : stack) {
-      for (auto &c : r) {
-        res += c.first;
-        res += c.second > 1 ? std::to_string(c.second) : "";
+      for (auto &[el, cnt] : r) {
+        res += el + (cnt > 1 ? std::to_string(cnt) : "");
       }
     }
-
     return res;
   }
 };
