@@ -20,7 +20,6 @@
 
 #include "../../tree_utils/include/TreeNode.h"
 #include "../../tree_utils/include/TreeUtils.h"
-#include <deque>
 #include <iostream>
 #include <vector>
 
@@ -33,29 +32,22 @@ public:
 class Solution1 : public Solution {
 public:
   std::string getDirections(TreeNode *root, int startValue, int destValue) {
-    auto start = std::deque<char>();
+    std::string start = "";
     dfs(root, start, startValue);
-    auto dest = std::deque<char>();
+    std::string dest = "";
     dfs(root, dest, destValue);
-    std::string ans = "";
 
-    while (!start.empty() && !dest.empty() && start.front() == dest.front()) {
-      start.pop_front();
-      dest.pop_front();
+    int i = 0;
+    while (!start.empty() && !dest.empty() && start[i] == dest[i]) {
+      i++;
     }
 
-    while (!start.empty()) {
-      start.pop_front();
-      ans += "U";
-    }
-    while (!dest.empty()) {
-      ans += dest.front();
-      dest.pop_front();
-    }
+    std::string ans(start.size() - i, 'U');
+    ans += dest;
     return ans;
   };
 
-  bool dfs(TreeNode *node, std::deque<char> &path, int target) {
+  bool dfs(TreeNode *node, std::string &path, int target) {
     if (!node || !node->val) {
       return false;
     }
