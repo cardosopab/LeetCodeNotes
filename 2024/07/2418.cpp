@@ -67,6 +67,30 @@ public:
   };
 };
 
+class Solution3 : public Solution {
+public:
+  std::vector<std::string> sortPeople(std::vector<std::string> &names,
+                                      std::vector<int> &heights) {
+    std::vector<std::pair<int, std::string>> order;
+    std::vector<std::string> ans;
+    int N = names.size();
+    ans.reserve(N);
+    order.reserve(N);
+
+    for (int i = 0; i < N; i++) {
+      order.push_back({heights[i], names[i]});
+    }
+
+    std::sort(order.rbegin(), order.rend());
+
+    for (auto [_, n] : order) {
+      ans.push_back(n);
+    }
+
+    return ans;
+  };
+};
+
 void test_solution(Solution *sol) {
   // Example 1:
   std::vector<std::string> names = {"Mary", "John", "Emma"};
@@ -101,4 +125,7 @@ int main() {
   std::cout << "Test 2" << '\n';
   Solution2 sol2;
   test_solution(&sol2);
+  std::cout << "Test 3" << '\n';
+  Solution3 sol3;
+  test_solution(&sol3);
 }
