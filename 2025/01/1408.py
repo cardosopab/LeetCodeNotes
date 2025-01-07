@@ -10,34 +10,44 @@
 
 class Solution:
     def stringMatching(self, words):
-        res = []
-        N = len(words)
-        for i in range(N):
-            for j in range(N):
-                if i != j:
-                    if (words[i] in words[j]):
-                        res.append(words[i])
-        return res
+        res = set()
+        for w in words:
+            for x in words:
+                if w is not x and w in x:
+                    res.add(w)
+        return list(res)
+
+
+def equal_lists(ans, sol):
+    if len(ans) != len(sol):
+        return False
+    for w in ans:
+        if w not in sol:
+            return False
+    return True
 
 
 #
 # Example 1:
 words = ["mass", "as", "hero", "superhero"]
 ans = ["as", "hero"]
-print("Pass" if Solution().stringMatching(words) == ans else "Fail")
+valid = equal_lists(ans, Solution().stringMatching(words))
+print("Pass" if valid else "Fail")
 # Explanation: "as" is substring of "mass" and "hero" is substring of "superhero".
 # ["hero","as"] is also a valid answer.
 
 # Example 2:
-words = ["leetcode", "et", "code"]
+words = ["leetcode", "et", "et", "code"]
 ans = ["et", "code"]
-print("Pass" if Solution().stringMatching(words) == ans else "Fail")
+valid = equal_lists(ans, Solution().stringMatching(words))
+print("Pass" if valid else "Fail")
 # Explanation: "et", "code" are substring of "leetcode".
 
 # Example 3:
 words = ["blue", "green", "bu"]
 ans = []
-print("Pass" if Solution().stringMatching(words) == ans else "Fail")
+valid = equal_lists(ans, Solution().stringMatching(words))
+print("Pass" if valid else "Fail")
 # Explanation: No string of words is substring of another string.
 #
 #
