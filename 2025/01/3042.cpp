@@ -40,10 +40,36 @@ public:
   }
 };
 
+class Solution1 {
+public:
+  int countPrefixSuffixPairs(vector<string> &words) {
+    int cnt = 0, N = words.size();
+    for (int i = 0; i < N; i++)
+      for (int j = i + 1; j < N; j++)
+        if (isPrefixAndSuffix(words[i], words[j]))
+          cnt++;
+    return cnt;
+  }
+  bool isPrefixAndSuffix(string &word1, string &word2) {
+    int N = word1.size();
+    int M = word2.size();
+    for (int i = 0; i < N; i++) {
+      if (word1[i] != word2[i])
+        return false;
+      if (word1[N - i - 1] != word2[M - i - 1])
+        return false;
+    }
+    return true;
+  }
+};
+
 int main() {
   // Example 1:
   vector<string> words = {"a", "aba", "ababa", "aa"};
-  cout << (Solution().countPrefixSuffixPairs(words) == 4 ? "Pass" : "Fail")
+  int ans = 4;
+  cout << (Solution().countPrefixSuffixPairs(words) == ans ? "Pass" : "Fail")
+       << endl;
+  cout << (Solution1().countPrefixSuffixPairs(words) == ans ? "Pass" : "Fail")
        << endl;
   // Explanation: In this example, the counted index pairs are:
   // i = 0 and j = 1 because isPrefixAndSuffix("a", "aba") is true.
@@ -54,7 +80,10 @@ int main() {
   //
   // Example 2:
   words = {"pa", "papa", "ma", "mama"};
-  cout << (Solution().countPrefixSuffixPairs(words) == 2 ? "Pass" : "Fail")
+  ans = 2;
+  cout << (Solution().countPrefixSuffixPairs(words) == ans ? "Pass" : "Fail")
+       << endl;
+  cout << (Solution1().countPrefixSuffixPairs(words) == ans ? "Pass" : "Fail")
        << endl;
   // Explanation: In this example, the counted index pairs are:
   // i = 0 and j = 1 because isPrefixAndSuffix("pa", "papa") is true.
@@ -62,7 +91,10 @@ int main() {
   // Therefore, the answer is 2.
   // Example 3:
   words = {"abab", "ab"};
-  cout << (Solution().countPrefixSuffixPairs(words) == 0 ? "Pass" : "Fail")
+  ans = 0;
+  cout << (Solution().countPrefixSuffixPairs(words) == ans ? "Pass" : "Fail")
+       << endl;
+  cout << (Solution1().countPrefixSuffixPairs(words) == ans ? "Pass" : "Fail")
        << endl;
   // Explanation: In this example, the only valid index pair is i = 0 and j =
   // 1, and isPrefixAndSuffix("abab", "ab") is false. Therefore, the answer is
